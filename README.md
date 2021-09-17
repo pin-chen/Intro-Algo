@@ -1,1 +1,1 @@
-# NYCUAlgoeitm
+# NYCU Algoritm
