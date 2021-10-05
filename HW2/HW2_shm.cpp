@@ -30,22 +30,16 @@ void intToS(string& OUT, int x){
 void solve(tTestData* test_data){
 	ofstream output("output.txt",ios::out);
 	map< pair<int,int>, int > H[3];
-	pair<int, int> point, S, E;
-	bool negtive, start;
-	int count, x;
+	pair<int, int> point, E;
+	bool negtive;
+	int count, x, j;
 	for(int i = 0; i < test_data->line_num; i++){
 		switch(test_data->data[i][1]){
 			case 's':{//"Assign"
 				negtive = false;
-				start = true;
 				count = 0;
-				for(int j = 10; test_data->data[i][j] != '\0'; j++){
-					if(start){
-						if(test_data->data[i][j] < '0' || test_data->data[i][j] > '9' ){
-							continue;
-						}
-					}	
-					start = false;
+				for(j = 10; test_data->data[i][j] < '0' || test_data->data[i][j] > '9'; j++);
+				for(; test_data->data[i][j] != '\0'; j++){
 					if(test_data->data[i][j] == '-'){
 						j++;
 						negtive = true;
@@ -97,29 +91,27 @@ void solve(tTestData* test_data){
 			}break;
 			case 'u':{//"Mult"
 				for(auto mA: H[0]){
-					S = make_pair(mA.first.second,0);
+					point = make_pair(mA.first.second,0);
 					E = make_pair(mA.first.second + 1,0);
-					H[1][S];
+					H[1][point];
 					H[1][E];
-					for(auto mB = H[1].find(S); mB != H[1].find(E); mB++){
-						point = make_pair(mA.first.first, mB->first.second);
+					for(auto mB = H[1].find(point); mB != H[1].find(E); mB++){
 						if(H[0][mA.first] == 0 || H[1][mB->first] == 0) continue;
-						H[2][point] += H[0][mA.first] * H[1][mB->first];
-						if( H[2][point] == 0) H[2].erase( H[2].find(point) );
+						H[2][make_pair(mA.first.first, mB->first.second)] += H[0][mA.first] * H[1][mB->first];
+						//if( H[2][point] == 0) H[2].erase( H[2].find(point) );
 					}
 				}
 			}break;	
 			case 'd':{//"Add"
-				int temp;
 				for(auto m: H[0]){
-					temp = H[0][m.first] + H[1][m.first];
-					if(temp) H[2][m.first] = temp;
+					x = H[0][m.first] + H[1][m.first];
+					if(x) H[2][m.first] = x;
 				}
 				for(auto m: H[1]){
-					temp = H[0][m.first] + H[1][m.first];
-					if(temp) H[2][m.first] = temp;
+					x = H[0][m.first] + H[1][m.first];
+					if(x) H[2][m.first] = x;
 				}
 			}break;
 		}
 	}
-} 
+}
