@@ -1,24 +1,57 @@
+#pragma GCC optimization ("Ofast")
+#pragma GCC optimization ("unroll-loops")
 #include <iostream>
 #include <string>
-#include <vector>
 #include <map>
-#pragma GCC optimization ("O2")
 #include <fstream>
 #include "data.hpp"
 using namespace std;
+void intToS(string& OUT, int x){
+	if(x == 0){
+		OUT.push_back('0');
+		return;
+	}
+	if(x < 0){
+		OUT.push_back('-');
+		x = -x;
+	}
+	int begin = OUT.size();
+	while(x > 0){
+		OUT.push_back('0' + (x % 10) );
+		x /= 10;
+	}
+	int end = OUT.size() - 1;
+	for(int i = begin; i <= begin + (end - begin) / 2; i++){
+		char temp = OUT[i];
+		OUT[i] = OUT[end - i + begin];
+		OUT[end - i + begin] = temp;
+	}
+}
 void solve(tTestData* test_data){
-	fstream output("output.txt",ios::out);
-	vector< map< pair<int,int>, int > > H;
-	H.resize(3);
+	ofstream output("output.txt",ios::out);
+	map< pair<int,int>, int > H[3];
+	pair<int, int> point, S, E;
+	bool negtive, start;
+	int count, x;
 	for(int i = 0; i < test_data->line_num; i++){
 		switch(test_data->data[i][1]){
 			case 's':{//"Assign"
-				int pos = test_data->data[i][7] - 'a';
-				pair<int, int> point;
-				int x, count = 0;
-				for(int j = 10;; j++){
+				negtive = false;
+				start = true;
+				count = 0;
+				for(int j = 10; test_data->data[i][j] != '\0'; j++){
+					if(start){
+						if(test_data->data[i][j] < '0' || test_data->data[i][j] > '9' ){
+							continue;
+						}
+					}	
+					start = false;
+					if(test_data->data[i][j] == '-'){
+						j++;
+						negtive = true;
+					}
 					x = 0;
-					while(test_data->data[i][j] >= '0' && test_data->data[i][j] <= '9'){
+					while(test_data->data[i][j] >= '0' && test_data->data[i][j] <= '9' && test_data->data[i][j] != '\0'){
 						x = x * 10 + (test_data->data[i][j] - '0');
 						j++;
 					}
@@ -32,56 +65,59 @@ void solve(tTestData* test_data){
 							break;
 						}
 						case 2:{
-							H[pos][point] = x;
+							H[test_data->data[i][7] - 'a'][point] = negtive ? -x : x;
 							break;
 						}
 					}
-					if(test_data->data[i][j] == '\0')break;
 					count++;
 				}
-			}break;	
+			}break;
+			case 'e'://"Delete"
+			case 'n'://"Init"
+			case 'a':{//"Matrix"
+				break;
+			}
 			case 'r':{//"Print"
-				int pos = test_data->data[i][6] - 'a';
 				string OUT;
-				for(auto out: H[pos]){
-					OUT += "(" + to_string(out.first.first) + " " + to_string(out.first.second )+ " " + to_string(out.second) + ")" + " ";
+				for(auto out: H[2]){
+					OUT.push_back('(');  
+					intToS(OUT, out.first.first);
+					OUT.push_back(' ');
+					intToS(OUT, out.first.second);
+					OUT.push_back(' ');
+					intToS(OUT, out.second);
+					OUT.push_back(')');
+					OUT.push_back(' ');
 				}
 				OUT.push_back('\n');
 				output << OUT;
-			}break;	
-			case 'e':{//"Delete"
-				int pos = test_data->data[i][7] - 'a';
-				H[pos].clear();
+				H[0].clear();
+				H[1].clear();
+				H[2].clear();
 			}break;
 			case 'u':{//"Mult"
-				int A = test_data->data[i][5] - 'a';
-				int B = test_data->data[i][9] - 'a';
-				int C = test_data->data[i][13] - 'a';
-				for(auto mA: H[A]){
-					pair<int, int> pointA = mA.first;
-					pair<int, int> S = make_pair(pointA.second,0);
-					pair<int, int> E = make_pair(pointA.second + 1,0);
-					H[B][S];
-					H[B][E];
-					for(auto mB = H[B].find(S); mB != H[B].find(E); mB++){
-						pair<int, int> pointB = mB->first;
-						pair<int, int> pointC = make_pair(pointA.first, pointB.second);
-						H[C][pointC] += H[A][pointA] * H[B][pointB];
-						if(H[C][pointC]==0) H[C].erase(H[C].find(pointC));
+				for(auto mA: H[0]){
+					S = make_pair(mA.first.second,0);
+					E = make_pair(mA.first.second + 1,0);
+					H[1][S];
+					H[1][E];
+					for(auto mB = H[1].find(S); mB != H[1].find(E); mB++){
+						point = make_pair(mA.first.first, mB->first.second);
+						if(H[0][mA.first] == 0 || H[1][mB->first] == 0) continue;
+						H[2][point] += H[0][mA.first] * H[1][mB->first];
+						if( H[2][point] == 0) H[2].erase( H[2].find(point) );
 					}
 				}
 			}break;	
 			case 'd':{//"Add"
-				int a = test_data->data[i][4] - 'a';
-				int b = test_data->data[i][8] - 'a';
-				int c = test_data->data[i][12] - 'a';
-				for(auto m: H[a]){
-					int temp = H[a][m.first] + H[b][m.first];
-					if(temp) H[c][m.first] = temp;
+				int temp;
+				for(auto m: H[0]){
+					temp = H[0][m.first] + H[1][m.first];
+					if(temp) H[2][m.first] = temp;
 				}
-				for(auto m: H[b]){
-					int temp = H[a][m.first] + H[b][m.first];
-					if(temp) H[c][m.first] = temp;
+				for(auto m: H[1]){
+					temp = H[0][m.first] + H[1][m.first];
+					if(temp) H[2][m.first] = temp;
 				}
 			}break;
 		}

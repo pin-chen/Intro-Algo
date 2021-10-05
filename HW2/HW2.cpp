@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 void intToS(string& OUT, int x){
-	if(x == 0) {
+	if(x == 0){
 		OUT.push_back('0');
 		return;
 	}
