@@ -1,33 +1,34 @@
-#include<iostream>
-#include<fstream>
-#include<sstream>
-#include<string>
+#include <iostream>
+#include <fstream>
+#include <string>
+#define MAX_NUM 5001
 using namespace std;
 int main(){
-	fstream input;
-	fstream ans;
-	input.open("input.txt",ios::in);
-	ans.open("output.txt",ios::out);
+	fstream input("input.txt", ios::in);;
+	fstream output("output.txt", ios::out);
 	int n;
+	int table[MAX_NUM] = {};
 	input >> n;
 	input.ignore();
-	int table[20001] = {};
+	string array;
 	while(n--){
-		string s;
-		getline(input,s);
-		stringstream ss;
-		ss << s;
-		int x;
-		while(ss >> x){
+		getline(input, array);
+		int x = 0;
+		for(int i = 0; i < array.size(); i++){
+			while(array[i] >= '0' && array[i] <= '9'){
+				x = x * 10 + (array[i] - '0');
+				i++;
+			}
 			table[x]++;
+			x = 0;
 		}
-		for(int j = 1; j < 20001; j++){
-			while(table[j] > 0){
-				ans << j << " ";
-				table[j]--;
+		for(int i = 1; i < MAX_NUM; i++){
+			while(table[i] > 0){
+				output << i << " ";
+				table[i]--;
 			}
 		}
-		ans << '\n';
+		output << '\n';
 	}
 	return 0;
 }
