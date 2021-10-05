@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#pragma GCC optimization ("O2")
 #include <fstream>
 #include "data.hpp"
 using namespace std;
@@ -15,7 +16,7 @@ void solve(tTestData* test_data){
 				int pos = test_data->data[i][7] - 'a';
 				pair<int, int> point;
 				int x, count = 0;
-				for(int j = 10; test_data->data[i][j] != '\0'; j++){
+				for(int j = 10;; j++){
 					x = 0;
 					while(test_data->data[i][j] >= '0' && test_data->data[i][j] <= '9'){
 						x = x * 10 + (test_data->data[i][j] - '0');

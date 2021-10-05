@@ -5,71 +5,58 @@
 #include <fstream>
 using namespace std;
 int main(){
-	fstream input("input.txt",ios::in);
-	fstream output("output.txt",ios::out);
+	ifstream input("input.txt",ios::in);
+	ofstream output("output.txt",ios::out);
 	map< pair<int,int>, int > H[3];
 	string x, s;
-	pair<int, int> point;
-	int pos, A, B, C;
+	pair<int, int> point, S, E;
 	stringstream ss;
 	while(getline(input, s)){
 		switch(s[1]){
 			case 's':{//"Assign"
 				ss << s;
 				ss >> x >> x >> point.first >> point.second;
-				pos = x[0] - 'a';
-				ss >> H[pos][point];
+				ss >> H[x[0] - 'a'][point];
 				ss.clear();
-			}break;	
+			}break;
+			case 'e'://"Delete"
+			case 'n'://"Init"
+			case 'a':{//"Matrix"
+				break;
+			}
 			case 'r':{//"Print"
-				pos = s[6] - 'a';
-				for(auto out: H[pos]){
+				for(auto out: H[2]){
 					output <<  "(" << out.first.first << " " << out.first.second << " " << out.second << ") ";
 				}
 				output << '\n';
-			}break;	
-			case 'e':{//"Delete"
-				pos = s[7] - 'a';
-				H[pos].clear();
+				H[0].clear();
+				H[1].clear();
+				H[2].clear();
 			}break;
 			case 'u':{//"Mult"
-				ss << s;
-				ss >> x >> x;
-				A = x[0] - 'a';
-				ss >> x;
-				B = x[0] - 'a';
-				ss >> x;
-				C = x[0] - 'a';
-				for(auto mA: H[A]){
-					pair<int, int> S = make_pair(mA.first.second,0);
-					pair<int, int> E = make_pair(mA.first.second + 1,0);
-					H[B][S];
-					H[B][E];
-					for(auto mB = H[B].find(S); mB != H[B].find(E); mB++){
+				for(auto mA: H[0]){
+					S = make_pair(mA.first.second,0);
+					E = make_pair(mA.first.second + 1,0);
+					H[1][S];
+					H[1][E];
+					for(auto mB = H[1].find(S); mB != H[1].find(E); mB++){
 						point = make_pair(mA.first.first, mB->first.second);
-						H[C][point] += H[A][mA.first] * H[B][mB->first];
-						if( H[C][point] == 0) H[C].erase( H[C].find(point) );
+						if(H[0][mA.first] == 0 || H[1][mB->first] == 0) continue;
+						H[2][point] += H[0][mA.first] * H[1][mB->first];
+						if( H[2][point] == 0) H[2].erase( H[2].find(point) );
 					}
 				}
-				ss.clear();
 			}break;	
 			case 'd':{//"Add"
-				ss << s;
-				ss >> x >> x;
-				A = x[0] - 'a';
-				ss >> x;
-				B = x[0] - 'a';
-				ss >> x;
-				C = x[0] - 'a';
-				for(auto m: H[A]){
-					int temp = H[A][m.first] + H[B][m.first];
-					if(temp) H[C][m.first] = temp;
+				int temp;
+				for(auto m: H[0]){
+					temp = H[0][m.first] + H[1][m.first];
+					if(temp) H[2][m.first] = temp;
 				}
-				for(auto m: H[B]){
-					int temp = H[A][m.first] + H[B][m.first];
-					if(temp) H[C][m.first] = temp;
+				for(auto m: H[1]){
+					temp = H[0][m.first] + H[1][m.first];
+					if(temp) H[2][m.first] = temp;
 				}
-				ss.clear();
 			}break;
 		}
 	}
