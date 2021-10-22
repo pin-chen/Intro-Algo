@@ -4,23 +4,24 @@
 #include <fstream>
 #include "data.hpp"
 using namespace std;
-
-int ans, n, m;
-int R[20] = {};
-int C[20] = {};
-
-void X(int x, bool *chessC, bool *chessD1, bool *chessD2){
+int ans, n, m, i, k, x, y;
+int R[20];
+int C[20];
+bool chessR[50];
+bool chessC[50];
+bool chessD1[99];
+bool chessD2[99];
+void X(int x){
 	if(x == n - m){
 		ans++;
 	    return;
 	}
 	for(int y = 0; y < n - m; y++){
-		bool temp =  chessC[C[y]] || chessD1[R[x] + C[y]] || chessD2[n - C[y] + R[x] - 1];
-	    if(!temp){
+	    if(!(chessC[C[y]] || chessD1[R[x] + C[y]] || chessD2[n - C[y] + R[x] - 1])){
 	        chessD1[R[x]+C[y]] = true;
 	        chessD2[n-C[y]+R[x]-1] = true;
 	        chessC[C[y]] = true;
-	        X(x + 1, chessC, chessD1, chessD2);
+	        X(x + 1);
 			chessD1[R[x]+C[y]] = false;
 	        chessD2[n-C[y]+R[x]-1] = false;
 	        chessC[C[y]] = false;
@@ -30,11 +31,6 @@ void X(int x, bool *chessC, bool *chessD1, bool *chessD2){
 
 void solve(tTestData* test_data){
 	ofstream out("output.txt", ios::out);
-	int i, k, x, y;
-	bool chessR[50] = {};
-	bool chessC[50] = {};
-	bool chessD1[2 * 50 - 1] = {};
-	bool chessD2[2 * 50 - 1] = {};
 	for(k = 0; k < test_data->t; k++){
 		n = test_data->testcase[k].n;
 		m = test_data->testcase[k].m;
@@ -54,14 +50,12 @@ void solve(tTestData* test_data){
 			chessD1[x + y] = true;
 			chessD2[n - y + x - 1] = true;
 		}
-		for(i = 0, x = 0; i < n; i++){
+		for(i = 0, x = 0; i < n; i++)
 			if(!chessR[i]) R[x++] = i;
-		}
-		for(i = 0, x = 0; i < n; i++){
+		for(i = 0, x = 0; i < n; i++)
 			if(!chessC[i]) C[x++] = i;
-		}
 		ans = 0;
-		X(0, chessC, chessD1, chessD2);
+		X(0);
 		out << ans << '\n';
 	}
 }
