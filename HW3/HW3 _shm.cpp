@@ -28,7 +28,6 @@ void X(int x){
 	    }
 	}
 }
-
 void solve(tTestData* test_data){
 	ofstream out("output.txt", ios::out);
 	for(k = 0; k < test_data->t; k++){

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-int ans, n, m, t, i, x ,y;
+int n, m, i, t, x, y;
 int R[20];
 int C[20];
 bool chessR[50];
@@ -11,18 +11,19 @@ bool chessC[50];
 bool chessD1[99];
 bool chessD2[99];
 void solve(int x){
-	if(x == n - m){
-		ans++;
+	if(x == i){
+		m++;
 	    return;
 	}
-	for(int y = 0; y < n - m; y++){
-	    if(!(chessC[C[y]] || chessD1[R[x] + C[y]] || chessD2[n - C[y] + R[x] - 1])){
-	        chessD1[R[x]+C[y]] = true;
-	        chessD2[n-C[y]+R[x]-1] = true;
+	int now_x = R[x];
+	for(int y = 0; y < i; y++){
+	    if(!(chessC[C[y]] || chessD1[now_x + C[y]] || chessD2[n - C[y] + now_x - 1])){
+	        chessD1[now_x+C[y]] = true;
+	        chessD2[n-C[y]+now_x-1] = true;
 	        chessC[C[y]] = true;
 	        solve(x + 1);
-			chessD1[R[x]+C[y]] = false;
-	        chessD2[n-C[y]+R[x]-1] = false;
+			chessD1[now_x+C[y]] = false;
+	        chessD2[n-C[y]+now_x-1] = false;
 	        chessC[C[y]] = false;
 	    }
 	}
@@ -48,13 +49,14 @@ int main(){
 			chessD1[x + y] = true;
 			chessD2[n - y + x - 1] = true;
 		}
-		for(i = 0, x = 0; i < n; i++)
+		for(i = 0, x = 0, y = 0; i < n; i++){
 			if(!chessR[i]) R[x++] = i;
-		for(i = 0, x = 0; i < n; i++)
-			if(!chessC[i]) C[x++] = i;
-		ans = 0;
+			if(!chessC[i]) C[y++] = i;
+		}
+		i = n - m;
+		m = 0;
 		solve(0);
-		out << ans << '\n';
+		out << m << '\n';
 	}
 	return 0;
 }
