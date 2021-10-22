@@ -1,10 +1,12 @@
+#pragma GCC optimization ("Ofast")
+#pragma GCC optimization ("unroll-loops")
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-int ans = 0, n, m;
-int R[24] = {};
-int C[24] = {};
+int ans, n, m;
+int R[20] = {};
+int C[20] = {};
 
 void solve(int x, bool *chessC, bool *chessD1, bool *chessD2){
 	if(x == n - m){
@@ -26,35 +28,38 @@ void solve(int x, bool *chessC, bool *chessD1, bool *chessD2){
 }
 
 int main(){
+	int t, k, i, x ,y;
+	bool chessR[50] = {};
+	bool chessC[50] = {};
+	bool chessD1[2 * 50 - 1] = {};
+	bool chessD2[2 * 50 - 1] = {};
 	ifstream in("input.txt", ios::in);
 	ofstream out("output.txt", ios::out);
-	int t;
 	in >> t;
-	for(int k = 0; k < t; k++){
+	for(k = 0; k < t; k++){
 		in >> n >> m;
-		bool chessR[n] = {};
-		bool chessC[n] = {};
-		bool chessD1[2 * n - 1] = {};
-		bool chessD2[2 * n - 1] = {};
-		for(int i = 0; i < m; i++){
-			int x, y;
+		for(i = 0; i < n; i++){
+			chessR[i] = false;
+			chessC[i] = false;
+		}
+		for(i = 0; i < 2 * n - 1; i++){
+			chessD1[i] = false;
+			chessD2[i] = false;
+		}
+		for(i = 0; i < m; i++){
 			in >> x >> y;
 			chessR[x] = true;
 			chessC[y] = true;
 			chessD1[x + y] = true;
 			chessD2[n - y + x - 1] = true;
 		}
-		for(int i = 0, x = 0; i < n; i++){
+		for(i = 0, x = 0; i < n; i++){
 			if(!chessR[i]) R[x++] = i;
 		}
-		for(int i = 0, x = 0; i < n; i++){
+		for(i = 0, x = 0; i < n; i++){
 			if(!chessC[i]) C[x++] = i;
 		}
 		ans = 0;
-		//if(n - m > 20) {
-		//	out << ans << '\n';
-		//	continue;
-		//}
 		solve(0, chessC, chessD1, chessD2);
 		out << ans << '\n';
 	}
