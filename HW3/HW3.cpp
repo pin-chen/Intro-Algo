@@ -17,14 +17,14 @@ void solve(int x){
 	}
 	int now_x = R[x];
 	for(int y = 0; y < i; y++){
-	    if(!(chessC[C[y]] || chessD1[now_x + C[y]] || chessD2[n - C[y] + now_x - 1])){
-	        chessD1[now_x+C[y]] = true;
-	        chessD2[n-C[y]+now_x-1] = true;
+	    if(!(chessC[C[y]] || chessD1[now_x + C[y]]|| chessD2[n - C[y] + now_x - 1])){
+	        chessD1[now_x + C[y]] = true;
+	        chessD2[n - C[y] + now_x - 1] = true;
 	        chessC[C[y]] = true;
 	        solve(x + 1);
-			chessD1[now_x+C[y]] = false;
-	        chessD2[n-C[y]+now_x-1] = false;
-	        chessC[C[y]] = false;
+			chessD1[now_x + C[y]] = false;
+	        chessD2[n - C[y]+ now_x - 1] = false;
+	        chessC[C[y]]= false;
 	    }
 	}
 }
