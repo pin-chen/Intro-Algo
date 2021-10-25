@@ -1,24 +1,25 @@
+#pragma GCC optimize ("Ofast")
+#pragma GCC optimize ("unroll-loops")
 #include <fstream>
 using namespace std;
-int_fast32_t n, m, i, t, x, y;
+int_fast16_t n, m, i, t, x, y;
 struct list{
 	list* next;
 	list* prev;
-	int_fast8_t num;
+	int_fast16_t num;
 };
-int_fast8_t R[20];
+int_fast16_t R[20];
 list C[20];
 list *head = &C[0];
-int_fast8_t chessR[50];
-int_fast8_t chessC[50];
+int_fast32_t chessR1, chessR2, chessC1, chessC2;
 int_fast8_t chessD1[99];
 int_fast8_t chessD2[99];
-void solve(int_fast32_t x){
+void solve(int_fast16_t x){
 	if(x == i){
 		m++;
 	    return;
 	}
-	int_fast32_t now_x = R[x];
+	int_fast16_t now_x = R[x];
 	for(list *now = head; now != nullptr; now = now->next){
 	    if(!(chessD1[now_x + now->num] || chessD2[n - now->num + now_x - 1])){
 	    	chessD2[n - now->num + now_x - 1] = true;
@@ -57,20 +58,28 @@ int main(){
 	in >> t;
 	while(t--){
 		in >> n >> m;
-		for(i = 0; i < n; i++) chessR[i] = false;
-		for(i = 0; i < n; i++) chessC[i] = false;
+		chessR1 = 0;
+		chessR2 = 0;
+		chessC1 = 0;
+		chessC2 = 0;
 		for(i = 0; i < 2 * n - 1; i++) chessD1[i] = false;
 		for(i = 0; i < 2 * n - 1; i++) chessD2[i] = false;
 		for(i = 0; i < m; i++){
 			in >> x >> y;
-			chessR[x] = true;
-			chessC[y] = true;
+			if(x < 33)	chessR1 = chessR1 | (1 << x);
+			else 		chessR2 = chessR2 | (1 << x);
+			if(y < 33)	chessC1 = chessC1 | (1 << y);
+			else 		chessC2 = chessC2 | (1 << y);
 			chessD1[x + y] = true;
 			chessD2[n - y + x - 1] = true;
 		}
-		for(i = 0, x = n-m-1, y = n-m-1; i < n; i++){
-			if(!chessR[i]) R[x--] = i;
-			if(!chessC[i]) C[y--].num = i;
+		for(i = 0, x = 0, y = 0; i < n && i < 33; i++){
+			if(!(chessR1 & (1 << i))) R[x++] = i;
+			if(!(chessC1 & (1 << i))) C[y++].num = i;
+		}
+		for(; i < n; i++){
+			if(!(chessR2 & (1 << i))) R[x++] = i;
+			if(!(chessC2 & (1 << i))) C[y++].num = i;
 		}
 		i = n - m;
 		m = 0;
