@@ -30,7 +30,8 @@ void solve(int x){
 }
 int main(){
 	ifstream in("input.txt", ios::in);
-	ofstream out("output.txt", ios::out);
+	//ofstream out("output.txt", ios::out);
+	system("> a.txt");
 	in >> t;
 	while(t--){
 		in >> n >> m;
@@ -56,7 +57,10 @@ int main(){
 		i = n - m;
 		m = 0;
 		solve(0);
-		out << m << '\n';
+		
+		system(("echo "+to_string(m)+" >> a.txt").c_str());
+		//out << m << '\n';
 	}
+	
 	return 0;
 }
