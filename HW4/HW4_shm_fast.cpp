@@ -2,12 +2,13 @@
 #include <fstream> 
 #include <vector>
 #define int int_fast32_t
+#define small_case 5
 using namespace std;
 
 int_fast64_t count1;
 int n, t, i, j;
-vector<int32_t> arr(500000);
-vector<int32_t> temp(500000);
+vector<int32_t> arr;
+vector<int32_t> temp;
 
 void insert_sort(const int start, const int end){
 	for(int i = start; i <= end; i++){
@@ -32,17 +33,6 @@ void insert_sort(const int start, const int end){
 void merge1(vector<int32_t>& initial, vector<int32_t>& result, const int start, const int mid, const int end){
     int iR = end, iL = mid;
     for(int i = end; i >= start; i--){
-        if(iR - mid - 1 < 0)    result[i] = initial[iL--];
-        else if(iL - start < 0) result[i] = initial[iR--];
-        else if(initial[iR] < initial[iL]){
-            result[i] = initial[iR--];
-        }else{
-            result[i] = initial[iL--];
-        }
-    }
-    iR = end; 
-    iL = mid;
-    for(int i = end; i >= start; i--){
         if(iR - mid - 1 < 0)    break;
         else if(iL - start < 0) break;
         else if((long long)initial[iL] + initial[iL] > initial[iR]){
@@ -52,10 +42,22 @@ void merge1(vector<int32_t>& initial, vector<int32_t>& result, const int start, 
             iL--;
         }
     }
+    if(start == 0 && end == n - 1) return;
+    iR = end; 
+    iL = mid;
+    for(int i = end; i >= start; i--){
+        if(iR - mid - 1 < 0)    result[i] = initial[iL--];
+        else if(iL - start < 0) result[i] = initial[iR--];
+        else if(initial[iR] < initial[iL]){
+            result[i] = initial[iR--];
+        }else{
+            result[i] = initial[iL--];
+        }
+    }
 }
 
 void merge_sort(){
-    for(int size = 10; size < n; size += size){
+    for(int size = small_case; size < n; size += size){
         //mergePass(arr, temp, size);
 		int i;
 	    for(i = 0; i < n - 2 * size + 1; i += size + size){
@@ -75,7 +77,11 @@ void merge_sort(){
 	}
 }
 
+
+
 void solve(tTestData* test_data){
+	arr.resize(500000);
+	temp.resize(500000);
 	ofstream out("output.txt");
 	for(t = 0; t < test_data->testcase_num; t++){
 		count1 = 0;
@@ -83,10 +89,10 @@ void solve(tTestData* test_data){
 		for(i = 0; i < n; i++){
 			temp[i] = test_data->seq[t][i];
 		}
-		for(i = 10; i < n; i += 10){
-			insert_sort(i - 10, i - 1);
+		for(i = small_case; i < n; i += small_case){
+			insert_sort(i - small_case, i - 1);
 		}
-		insert_sort(i - 10, n - 1);
+		insert_sort(i - small_case, n - 1);
 		merge_sort();
 		out << count1 << '\n';
 	}

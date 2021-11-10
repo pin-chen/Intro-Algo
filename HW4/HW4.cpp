@@ -6,22 +6,9 @@ using namespace std;
 
 long long count1 = 0;
 long long count2 = 0;
-
+int n;
 void merge1(vector<int>& initial, vector<int>& result, const int start, const int mid, const int end){
     int iR = end, iL = mid;
-    for(int i = end; i >= start; i--){
-        if(iR - mid - 1 < 0)    result[i] = initial[iL--];
-        else if(iL - start < 0) result[i] = initial[iR--];
-        else if(initial[iR] < initial[iL]){
-            result[i] = initial[iR--];
-        }else{
-        	count2 += iR - mid;
-            result[i] = initial[iL--];
-        }
-        
-    }
-    iR = end; 
-    iL = mid;
     for(int i = end; i >= start; i--){
         if(iR - mid - 1 < 0)    break;
         else if(iL - start < 0) break;
@@ -31,7 +18,19 @@ void merge1(vector<int>& initial, vector<int>& result, const int start, const in
             count1 += iR - mid;
             iL--;
         }
-        
+    }
+    if(start == 0 && end == n-1) return;
+    iR = end; 
+    iL = mid;
+    for(int i = end; i >= start; i--){
+        if(iR - mid - 1 < 0)    result[i] = initial[iL--];
+        else if(iL - start < 0) result[i] = initial[iR--];
+        else if(initial[iR] < initial[iL]){
+            result[i] = initial[iR--];
+        }else{
+        	count2 += iR - mid;
+            result[i] = initial[iL--];
+        }
     }
 }
 void mergePass(vector<int>& initial, vector<int>& result, const int size){
@@ -51,6 +50,7 @@ void merge_sort(vector<int>& arr){
         size *= 2;
         mergePass(temp, arr, size);
     }
+    
 }
 vector<int> arr;
 vector<int> temp;
@@ -78,14 +78,13 @@ void insert_sort(const int start, const int end){
 int main(){
 	ifstream in("input.txt");
 	ofstream out("output.txt"); 
-	int T, n;
+	int T;
 	long long ans;
 	in >> T;
 	while(T--){
 		count1 = 0;
 		ans = 0;
 		in >> n;
-		cout << n << '\n';
 		arr.resize(n);
 		for(int i = 0; i < n; i++){
 			in >> arr[i];
