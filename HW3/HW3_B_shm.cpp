@@ -7,13 +7,14 @@ struct list{
 	list* prev;
 	int_fast8_t num;
 };
-int_fast8_t R[20];
+int R[45];
 list C[20];
 list *head = &C[0];
-int_fast8_t chessR[50];
-int_fast8_t chessC[50];
-int_fast8_t chessD1[99];
-int_fast8_t chessD2[99];
+int_fast8_t mem[630];
+int_fast8_t* chessR=&mem[100];
+int_fast8_t* chessC=&mem[150];
+int_fast8_t* chessD1=&mem[200];
+int_fast8_t* chessD2=&mem[300];
 void X(int_fast32_t x){
 	if(x == i){
 		m++;
@@ -83,7 +84,6 @@ void solve(tTestData* test_data){
 		m = 0;
 		C[i - 1].next = nullptr;
 		X(0);
-		system(("echo "+to_string(m)+" >> output.txt").c_str());
 		C[i - 1].next = &C[i];
 	}
 }

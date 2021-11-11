@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 #define test 10
 using namespace std;
 
@@ -57,25 +58,24 @@ vector<int> arr;
 void insert_sort(vector<int>& temp, const int start, const int end){
 	//cout << end << '\n';
 	for(int i = start; i <= end; i++){
-		int j;
-		for(j = i-1; j >= start; j--){
-			if(arr[i] <= temp[j]){
-				break;
+		if(temp[i] < 0){
+			for(int k = i-1; k >= start && temp[k] <= temp[i]/2; k--){
+				if((long long)temp[k] + temp[k] <= temp[i]){
+					count1++;
+				}
+			}
+		}else{
+			for(int k = i-1; k >= start && temp[i] >= temp[k]; k--){
+				if((long long)temp[k] + temp[k] <= temp[i]){
+					count1++;
+				}
 			}
 		}
-		for(int k = i-1; k >= start; k--){
-			if((long long)temp[k] + temp[k] <= arr[i]){
-				count1++;
-			}
-		}
-		for(int k = i; k > j + 1; k--){
-			temp[k] = temp[k-1];
-		}
-		temp[j+1] = arr[i];
+		sort(temp.begin()+start, temp.begin()+i+1, greater<int32_t>());
 	}
 }
-vector<int> temp;
-vector<int> temp2;
+vector<int32_t> temp;
+vector<int32_t> temp2;
 int nX;
 void merge_last(){
     int iR = nX - nX/2 - 1, iL = nX/2 - 1;
@@ -102,25 +102,25 @@ int main(){
 		ans = 0;
 		in >> nX;
 		n = nX/2;
-		arr.resize(n);
+		temp.resize(n);
 		int i;
 		for(int i = 0; i < n; i++){
-			in >> arr[i];
+			in >> temp[i];
 		}
-		temp.resize(n);
+		
 		int j;
 		for(j = test; j < n; j += test){
 			insert_sort(temp, j - test, j - 1);
 		}
 		insert_sort(temp, j - test, n - 1);
+		//for(auto x : temp)cout << x << " ";
+		cout << '\n'; 
 		merge_sort(temp);
-		
 		n = nX - nX/2;
-		arr.resize(n);
-		for(int i = 0; i < n; i++){
-			in >> arr[i];
-		}
 		temp2.resize(n);
+		for(int i = 0; i < n; i++){
+			in >> temp2[i];
+		}
 		for(j = test; j < n; j += test){
 			insert_sort(temp2, j - test, j - 1);
 		}
