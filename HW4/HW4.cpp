@@ -19,7 +19,7 @@ void merge1(vector<int>& initial, vector<int>& result, const int start, const in
             iL--;
         }
     }
-    if(start == 0 && end == n-1) return;
+    //if(start == 0 && end == n-1) return;
     iR = end; 
     iL = mid;
     for(int i = end; i >= start; i--){
@@ -53,8 +53,8 @@ void merge_sort(vector<int>& arr){
     
 }
 vector<int> arr;
-vector<int> temp;
-void insert_sort(const int start, const int end){
+
+void insert_sort(vector<int>& temp, const int start, const int end){
 	//cout << end << '\n';
 	for(int i = start; i <= end; i++){
 		int j;
@@ -74,6 +74,22 @@ void insert_sort(const int start, const int end){
 		temp[j+1] = arr[i];
 	}
 }
+vector<int> temp;
+vector<int> temp2;
+int nX;
+void merge_last(){
+    int iR = nX - nX/2 - 1, iL = nX/2 - 1;
+    for(int i = nX - 1; i >= 0; i--){
+        if(iR < 0)    break;
+        else if(iL < 0) break;
+        else if((long long)temp[iL] + temp[iL] > temp2[iR]){
+        	iR--;
+        }else{
+            count1 += iR + 1;
+            iL--;
+        }
+    }
+}
 
 int main(){
 	ifstream in("input.txt");
@@ -84,18 +100,34 @@ int main(){
 	while(T--){
 		count1 = 0;
 		ans = 0;
-		in >> n;
+		in >> nX;
+		n = nX/2;
 		arr.resize(n);
+		int i;
 		for(int i = 0; i < n; i++){
 			in >> arr[i];
 		}
 		temp.resize(n);
-		int i;
-		for(i = test; i < n; i += test){
-			insert_sort(i - test, i - 1);
+		int j;
+		for(j = test; j < n; j += test){
+			insert_sort(temp, j - test, j - 1);
 		}
-		insert_sort(i - test, n - 1);
+		insert_sort(temp, j - test, n - 1);
 		merge_sort(temp);
+		
+		n = nX - nX/2;
+		arr.resize(n);
+		for(int i = 0; i < n; i++){
+			in >> arr[i];
+		}
+		temp2.resize(n);
+		for(j = test; j < n; j += test){
+			insert_sort(temp2, j - test, j - 1);
+		}
+		insert_sort(temp2, j - test, n - 1);
+		merge_sort(temp2);
+		
+		merge_last();
 		out << count1 << '\n';
 	}
 	return 0;
