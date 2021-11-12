@@ -1,133 +1,131 @@
-#include <iostream>
 #include <fstream>
-#include <vector>
 #include <algorithm>
-#define test 10
-using namespace std;
-
-long long count1 = 0;
-long long count2 = 0;
+#define int int_fast32_t
+#define small_case 16
+#define MEM 840000
+#define FILE 10000
+int_fast64_t count1;
 int n;
-void merge1(vector<int>& initial, vector<int>& result, const int start, const int mid, const int end){
-    int iR = end, iL = mid;
+int32_t mem[MEM+500000+MEM];
+int32_t* arr = &mem[MEM];
+char x[FILE+FILE+FILE];
+char* s = &x[FILE];
+
+inline void insert_sort(const int start, const int end){
+	for(int i = start; i <= end; i++){
+		int j;
+		for(j = i-1; j >= start; j--){
+			if(arr[i] <= arr[j]){
+				break;
+			}
+		}
+		if(arr[i] < 0){
+			for(int k = i-1;  arr[k] <= arr[i]/2 &&  k >= start; k--){
+				if((long long)arr[k] + arr[k] <= arr[i]){
+					count1++;
+				}
+			}
+		}else{
+			for(int k = i-1; k > j; k--){
+				if((long long)arr[k] + arr[k] <= arr[i]){
+					count1++;
+				}
+			}
+		}
+		int32_t temp = arr[i];
+		for(int k = i; k > j + 1; k--){
+			arr[k] = arr[k-1];
+		}
+		arr[j+1] = temp;
+	}
+}
+
+inline void counter(const int start, const int mid, const int end){
+ 	int iR = end, iL = mid;
     for(int i = end; i >= start; i--){
         if(iR - mid - 1 < 0)    break;
         else if(iL - start < 0) break;
-        else if((long long)initial[iL] + initial[iL] > initial[iR]){
+        else if((long long)arr[iL] + arr[iL] > arr[iR]){
         	iR--;
         }else{
             count1 += iR - mid;
             iL--;
         }
     }
-    //if(start == 0 && end == n-1) return;
-    iR = end; 
-    iL = mid;
-    for(int i = end; i >= start; i--){
-        if(iR - mid - 1 < 0)    result[i] = initial[iL--];
-        else if(iL - start < 0) result[i] = initial[iR--];
-        else if(initial[iR] < initial[iL]){
-            result[i] = initial[iR--];
-        }else{
-        	count2 += iR - mid;
-            result[i] = initial[iL--];
-        }
-    }
-}
-void mergePass(vector<int>& initial, vector<int>& result, const int size){
-    int i = 0;
-    for(i = 0; i < (int) initial.size() - 2 * size + 1; i += 2 * size){
-        merge1(initial, result, i, i + size - 1, i + 2 * size - 1);
-    }
-    if(initial.size() - i + 1 > size)   merge1(initial, result, i, i + size - 1, initial.size() - 1);
-    else                            	merge1(initial, result, i, initial.size() - 1, initial.size() - 1);
 }
 
-void merge_sort(vector<int>& arr){
-	vector<int> temp;
-	temp.resize(arr.size());
-    for(int size = test; size < arr.size(); size *= 2){
-        mergePass(arr, temp, size);
-        size *= 2;
-        mergePass(temp, arr, size);
+void merge_sort(const int start, const int end){
+	if(end - start < small_case){
+		insert_sort(start, end);
+	}else{
+        int mid = (end + start) / 2;
+        merge_sort(start, mid);
+        merge_sort(mid + 1, end);
+       	counter(start, mid, end);
+        inplace_merge(arr+start, arr+mid+1, arr+end+1, std::greater<int32_t>());
     }
-    
 }
-vector<int> arr;
 
-void insert_sort(vector<int>& temp, const int start, const int end){
-	//cout << end << '\n';
-	for(int i = start; i <= end; i++){
-		if(temp[i] < 0){
-			for(int k = i-1; k >= start && temp[k] <= temp[i]/2; k--){
-				if((long long)temp[k] + temp[k] <= temp[i]){
-					count1++;
-				}
-			}
-		}else{
-			for(int k = i-1; k >= start && temp[i] >= temp[k]; k--){
-				if((long long)temp[k] + temp[k] <= temp[i]){
-					count1++;
-				}
-			}
+inline void input(int32_t& num, int& p, std::ifstream& in, char end){
+	bool negitive = 0;
+	num = 0;
+	while(s[p] != end){
+		if(s[p] == '-')
+			negitive = 1;
+		else 
+			num = num * 10 + (s[p] - '0');
+		if(++p == FILE){
+			in.read(s, FILE);
+			p = 0;
 		}
-		sort(temp.begin()+start, temp.begin()+i+1, greater<int32_t>());
+	}
+	if(negitive) num = 0 - num;
+	if(++p == FILE){
+		in.read(s, FILE);
+		p = 0;
 	}
 }
-vector<int32_t> temp;
-vector<int32_t> temp2;
-int nX;
-void merge_last(){
-    int iR = nX - nX/2 - 1, iL = nX/2 - 1;
-    for(int i = nX - 1; i >= 0; i--){
-        if(iR < 0)    break;
-        else if(iL < 0) break;
-        else if((long long)temp[iL] + temp[iL] > temp2[iR]){
-        	iR--;
-        }else{
-            count1 += iR + 1;
-            iL--;
-        }
-    }
+inline void input(int& num, int& p, std::ifstream& in, char end) {
+	bool negitive = 0;
+	num = 0;
+	while(s[p] != end){
+		if(s[p] == '-')
+			negitive = 1;
+		else 
+			num = num * 10 + (s[p] - '0');
+		if(++p == FILE){
+			in.read(s, FILE);
+			p = 0;
+		}
+	}
+	if(negitive) num = 0 - num;
+	if(++p == FILE){
+		in.read(s, FILE);
+		p = 0;
+	}
 }
 
-int main(){
-	ifstream in("input.txt");
-	ofstream out("output.txt"); 
-	int T;
-	long long ans;
-	in >> T;
+int32_t main(){
+	std::ofstream out("output.txt");
+	std::ifstream in("input.txt");
+	in.read(s, FILE);
+	int p = 0;
+	int i, j, T;
+	input(T, p, in, '\n');
 	while(T--){
+		//
 		count1 = 0;
-		ans = 0;
-		in >> nX;
-		n = nX/2;
-		temp.resize(n);
-		int i;
-		for(int i = 0; i < n; i++){
-			in >> temp[i];
+		input(n, p, in, ' ');
+		//
+		for(i = 0; i < n - 1; i++){
+			input(arr[i], p, in, ' ');
 		}
-		
-		int j;
-		for(j = test; j < n; j += test){
-			insert_sort(temp, j - test, j - 1);
-		}
-		insert_sort(temp, j - test, n - 1);
-		//for(auto x : temp)cout << x << " ";
-		cout << '\n'; 
-		merge_sort(temp);
-		n = nX - nX/2;
-		temp2.resize(n);
-		for(int i = 0; i < n; i++){
-			in >> temp2[i];
-		}
-		for(j = test; j < n; j += test){
-			insert_sort(temp2, j - test, j - 1);
-		}
-		insert_sort(temp2, j - test, n - 1);
-		merge_sort(temp2);
-		
-		merge_last();
+		input(arr[i], p, in, '\n');
+		//
+		merge_sort(0, n/2);
+		merge_sort(n/2+1, n-1);
+		counter(0, n/2, n-1);
+		//
 		out << count1 << '\n';
 	}
 	return 0;
