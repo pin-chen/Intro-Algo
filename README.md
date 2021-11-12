@@ -1,5 +1,7 @@
 # NYCU Algoritm
 
+1101 演算法概論 吳育松
+
 HW1 
 
 The Hint of faster way: counting sort, string processing.
