@@ -23,9 +23,9 @@ HW3
 
 The Hint of faster way: let it be n-m row and n-m column, every row and column only check 1 time in the same state (linked list).
 
-Final Rank: .
+Final Rank: 3rd.
 
-Final Grade: .
+Final Grade: 96.
 
 HW4
 
