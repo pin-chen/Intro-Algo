@@ -2,7 +2,7 @@
 
 1101 演算法概論 吳育松
 
-HW1 
+HW1 Sort (Text Input)
 
 The Hint of faster way: counting sort, string processing.
 
@@ -11,7 +11,7 @@ Final Rank: 3rd.
 Final Grade: 92.
 
 
-HW2 
+HW2 Sparse Matrix
 
 The Hint of faster way: less range for mult ,string processing.
 
@@ -19,15 +19,15 @@ Final Rank: 3rd.
 
 Final Grade: 96.
 
-HW3 
+HW3 N queens problem
 
 The Hint of faster way: let it be n-m row and n-m column, every row and column only check 1 time in the same state (linked list).
 
-Final Rank: .
+Final Rank: 3rd.
 
-Final Grade: .
+Final Grade: 96.
 
-HW4
+HW4 Increasing Pairs
 
 The Hint of faster way: merge sort, insertion sort, do not complete the sort, use larger space to get less flt.
 
