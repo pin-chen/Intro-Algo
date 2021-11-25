@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iostream>
 #include <algorithm>
 #define int int_fast32_t
 #define small_case 16
@@ -8,6 +9,7 @@ int_fast64_t count1;
 int n;
 int32_t mem[MEM+500000+MEM];
 int32_t* arr = &mem[MEM];
+int32_t* temp = &mem[MEM+500000];
 char x[FILE+FILE+FILE];
 char* s = &x[FILE];
 
@@ -41,17 +43,27 @@ inline void insert_sort(const int start, const int end){
 }
 
 inline void counter(const int start, const int mid, const int end){
- 	int iR = end, iL = mid;
-    for(int i = end; i >= start; i--){
-        if(iR - mid - 1 < 0)    break;
-        else if(iL - start < 0) break;
-        else if((long long)arr[iL] + arr[iL] > arr[iR]){
-        	iR--;
-        }else{
-            count1 += iR - mid;
-            iL--;
-        }
-    }
+ 	int j = mid;
+    for(int i = end; i > mid; i--){
+    	while(j >= 0 && (long long) arr[j] + arr[j] <= arr[i]){
+    		count1 += i - mid;
+    		j--;
+		}
+	}
+}
+
+void merge1(const int start, const int mid, const int end){
+	for(int i = start; i <= end; i++) temp[i - start] = arr[i];
+    int s = start, e = end - start, m = mid - start, i, j;
+	for(i = 0, j = m + 1; i <= m; ){
+    	while(j <= e && temp[j] >= temp[i]){
+    		arr[s++] = temp[j++];
+		}
+		arr[s++] = temp[i++];
+	}
+	while(j <= e){
+		arr[s++] = temp[j++];
+	}
 }
 
 void merge_sort(const int start, const int end){
@@ -62,30 +74,12 @@ void merge_sort(const int start, const int end){
         merge_sort(start, mid);
         merge_sort(mid + 1, end);
        	counter(start, mid, end);
-        inplace_merge(arr+start, arr+mid+1, arr+end+1, std::greater<int32_t>());
+       	merge1(start, mid, end);
+        //inplace_merge(arr+start, arr+mid+1, arr+end+1, std::greater<int32_t>());
     }
 }
 
 inline void input(int32_t& num, int& p, std::ifstream& in, char end){
-	bool negitive = 0;
-	num = 0;
-	while(s[p] != end){
-		if(s[p] == '-')
-			negitive = 1;
-		else 
-			num = num * 10 + (s[p] - '0');
-		if(++p == FILE){
-			in.read(s, FILE);
-			p = 0;
-		}
-	}
-	if(negitive) num = 0 - num;
-	if(++p == FILE){
-		in.read(s, FILE);
-		p = 0;
-	}
-}
-inline void input(int& num, int& p, std::ifstream& in, char end) {
 	bool negitive = 0;
 	num = 0;
 	while(s[p] != end){

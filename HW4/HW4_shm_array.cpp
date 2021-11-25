@@ -3,12 +3,12 @@
 #define int int_fast32_t
 //#define int32_t int_fast32_t
 #define small_case 16
-#define MEM 640000
+#define MEM 540000
 using namespace std;
 
 int_fast64_t count1;
 int n, nX;
-int32_t mem[MEM+MEM+750000];
+int32_t mem[MEM+300000+750000];
 int32_t* arr = &mem[MEM];
 int32_t* arr2;
 int32_t* temp;

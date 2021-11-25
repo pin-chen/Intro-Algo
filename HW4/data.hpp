@@ -7,7 +7,7 @@
 struct tTestData {
     int testcase_num;
     int seq_num[max_test_num];
-    int seq[max_test_num][50000];
+    int seq[max_test_num][500000];
 };
 
 extern void solve (tTestData *t);
