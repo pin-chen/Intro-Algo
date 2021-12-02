@@ -17,10 +17,19 @@ inline void insert_sort(const int start, const int end){
 	for(int i = start; i <= end; i++){
 		int j;
 		for(j = i-1; j >= start; j--){
-			if(arr[i] <= arr[j]){
+			if(arr[i] < arr[j]){
 				break;
 			}
 		}
+		int e;
+		if(start < i){
+			e=std::upper_bound(arr+start, arr+i-1, arr[i], std::greater<int32_t>())-arr;
+			if(arr[start] < arr[i]) e = start-1;
+			if(arr[i-1] >= arr[i]) e = i -1;
+			std::cout << j << " " <<e<<'\n';
+		}
+			
+		//else if(arr[i-1]<=arr[j])
 		if(arr[i] < 0){
 			for(int k = i-1;  arr[k] <= arr[i]/2 &&  k >= start; k--){
 				if((long long)arr[k] + arr[k] <= arr[i]){
@@ -28,11 +37,14 @@ inline void insert_sort(const int start, const int end){
 				}
 			}
 		}else{
+			int g = 0;
 			for(int k = i-1; k > j; k--){
 				if((long long)arr[k] + arr[k] <= arr[i]){
 					count1++;
+					g++;
 				}
 			}
+			
 		}
 		int32_t temp = arr[i];
 		for(int k = i; k > j + 1; k--){

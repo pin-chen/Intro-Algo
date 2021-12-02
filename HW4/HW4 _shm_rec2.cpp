@@ -1,26 +1,26 @@
+#pragma GCC optimize("Ofast")
 #include "data.hpp"
 #include <fstream>
 #include <cstring>
 #define int int_fast32_t
-#define small_case_n 14
-#define small_case_p 17
+#define small_case_n 10
+#define small_case_p 14
 int_fast64_t count1;
 int n;
 int32_t mem[1500000];
 int32_t* arr = &mem[790000];
 int32_t* temp = &mem[540000];
 void insert_sort_n(const int start, const int end){
-	int i, j, k;
+	int i, j, k, x;
 	for(i = start; i <= end; i++){
 		for(j = i-1; j >= start; j--){
 			if(arr[i] <= arr[j]){
 				break;
 			}
 		}
-		for(k = i-1;  arr[k] <= arr[i]/2 &&  k >= start; k--){
-			if((long long)arr[k] + arr[k] <= arr[i]){
-				count1++;
-			}
+		x = arr[i] >> 1;
+		for(k = i-1; k >= start && arr[k] <= x; k--){
+			count1++;
 		}
 		int32_t temp = arr[i];
 		for(k = i; k > j + 1; k--){
@@ -31,17 +31,16 @@ void insert_sort_n(const int start, const int end){
 }
 
 void insert_sort_p(const int start, const int end){
-	int i, j ,k;
+	int i, j ,k, x;
 	for(i = start; i <= end; i++){
 		for(j = i-1; j >= start; j--){
 			if(arr[i] <= arr[j]){
 				break;
 			}
 		}
-		for(k = i-1; k > j; k--){
-			if((long long) arr[k] + arr[k] <= arr[i] ){
-				count1++;
-			}
+		x = arr[i] >> 1;
+		for(k = i-1; k > j && arr[k] <= x; k--){
+			count1++;
 		}
 		int32_t temp = arr[i];
 		for(k = i; k > j + 1; k--){
@@ -62,6 +61,7 @@ inline void merge1(const int start, const int mid, const int end){
 	if(iR <= end) std::memcpy(temp+i, arr+iR, (end-iR+1)*sizeof(int32_t));
 	std::memcpy(arr+start, temp, (end-start+1)*sizeof(int32_t));
 }
+
 
 inline void counter(const int start, const int mid, const int end){
  	int iR = end, iL = mid;

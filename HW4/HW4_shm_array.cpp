@@ -1,3 +1,4 @@
+#pragma GCC optimize("Ofast,unroll-loops")
 #include "data.hpp"
 #include <fstream>
 #define int int_fast32_t
