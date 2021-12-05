@@ -5,10 +5,6 @@ using namespace std;
 int edge[20000002][2]={};
 int node[100000]={};
 int main(){
-	for(int i =0; i< 20000002;i++){
-		edge[i][0]=0;
-		edge[i][1]=0;
-	}
 	ifstream in("input.txt");
 	ofstream out("output.txt");
 	int T;
@@ -36,7 +32,9 @@ int main(){
 			out << prev - MAX << '\n';
 			continue; 
 		}
+	 
 		cur = edge[prev][0];
+		cout << prev << " " <<cur<<'\n'; 
 		for(i = 1; i < I; i++){
 			if(edge[cur][0]==prev){
 				prev = cur;
