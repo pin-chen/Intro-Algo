@@ -1,6 +1,7 @@
 #pragma GCC optimize("Ofast,unroll-loops")
 #include "data.hpp"
 #include <fstream>
+#include <cstdint>
 #define MAX 10000001
 #define SIZE 200000
 #define HASH_MASK 0x0000FFFF
@@ -10,7 +11,7 @@ struct NODE{
 	NODE *next;
 };
 NODE mem[1000000];
-NODE *edge_chain = &mem[SIZE+0x10000];
+NODE *edge_chain = &mem[SIZE+HASH_MASK+1];
 NODE *edge = &mem[SIZE];
 NODE *now;
 int node[250000];
