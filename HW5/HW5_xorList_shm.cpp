@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cstdint>
 #define HASH_MASK 0x00007FFF
-#define SIZE HASH_MASK+31755
+#define SIZE HASH_MASK+61755
 struct NODE{
 	bool one;
 	int node;
@@ -16,7 +16,7 @@ NODE *edge = &mem[SIZE];
 NODE *now;
 NODE *nowA;
 NODE *nowB;
-int MEM[250000];
+int MEM[350000];
 int *node = &MEM[50000];
 int_fast32_t n, I, i, j, t, a, b, k, cur;
 void solve(tTestData* test_data){
