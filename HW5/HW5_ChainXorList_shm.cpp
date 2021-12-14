@@ -8,8 +8,6 @@ struct NODE{
 	unsigned int edge;
 	NODE *next;
 };
-//0x0000FFFF,620755,1080000 1.358
-//0x00007FFF,114688,286720
 NODE mem[680000];
 NODE *edge = &mem[SIZE];
 NODE *edge_chain = &mem[SIZE+HASH_MASK+1];
@@ -49,12 +47,12 @@ void solve(tTestData* test_data){
 			}else{
 				nowB->node = b;
 			}
-			nowA->edge ^= (intptr_t) nowB;
-			nowB->edge ^= (intptr_t) nowA;
+			nowA->edge ^= (unsigned long long) nowB;
+			nowB->edge ^= (unsigned long long) nowA;
 		}
 		for(; (nowA->edge ^ (unsigned long long)nowB) != 0; ){
 			now = nowA;
-			nowA = (NODE*) (nowA->edge ^ (intptr_t)nowB);
+			nowA = (NODE*) (nowA->edge ^ (unsigned long long)nowB);
 			nowB = now;
 		}
 		a = nowA->node;
