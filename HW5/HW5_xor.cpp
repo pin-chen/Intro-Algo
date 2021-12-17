@@ -1,6 +1,6 @@
 #pragma GCC optimize("Ofast,unroll-loops")
 #include <fstream>
-#include <iostream> 
+#include <iostream>
 #define MAX 10000001
 using namespace std;
 int edge[20000002];
@@ -10,7 +10,7 @@ int main(){
 	int prev, cur;
 	ofstream out("output.txt");
 	ifstream in("input.txt");
-	in >> T; 
+	in >> T;
 	while(T--){
 		in >> n >> I;
 		for(i = 0, j = 0; i < n-1; i++){
