@@ -1,7 +1,7 @@
 #pragma GCC optimize("Ofast,unroll-loops")
-#include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include <set>
 int main(){
 	std::ifstream in("input.txt");
@@ -9,11 +9,12 @@ int main(){
 	int n, m, i, j, k, ans;
 	std::set<int> word[2];
 	bool w, match;
+	std::string cmp, str;
 	in >> n;
 	while(n--){
 		in >> m;
-		std::string substr[m];
-		std::string str;
+		std::string substr[m+1];
+		substr[m].push_back('{');
 		for(i = 0; i < m; i++){
 			in >> substr[i];
 		}
@@ -21,9 +22,11 @@ int main(){
 		str.push_back(' ');
 		word[0].clear();
 		word[1].clear();
-		for(j = 0; j < m; j++){
+		sort(substr, substr + m);
+		cmp.push_back(str[0] + 1);
+		for(j = std::lower_bound(substr, substr + m, str.substr(0,1)) - substr; substr[j] < cmp; j++){
 			match = 1;
-			for(k = 0; k < substr[j].size(); k++){
+			for(k = 1; k < substr[j].size(); k++){
 				if(substr[j][k] != str[k]){
 					match = 0;
 					break;
@@ -33,16 +36,18 @@ int main(){
 				word[0].insert(k);
 			}
 		}
+		cmp.clear();
 		w = 0;
-		for(ans = 1; ; ans++){
+		for(ans = 2; ; ans++){
 			if(word[w].size() == 0){
 				out << "-1" << '\n';
 				break;
 			}
 			for(auto x: word[w]){
-				for(j = 0; j < m; j++){
+				cmp.push_back(str[x] + 1);
+				for(j = std::lower_bound(substr, substr + m, str.substr(x,1)) - substr; substr[j] < cmp; j++){
 					match = 1;
-					for(k = 0; k < substr[j].size(); k++){
+					for(k = 1; k < substr[j].size(); k++){
 						if(substr[j][k] != str[x + k]){
 							match = 0;
 							break;
@@ -50,12 +55,13 @@ int main(){
 					}
 					if(match){
 						if(x + k == str.size()-1){
-							out << ans + 1 << '\n';
+							out << ans << '\n';
 							goto fin;
 						}
 						word[!w].insert(x + k);
 					}
 				}
+				cmp.clear();
 			}
 			word[w].clear();
 			w = !w;
