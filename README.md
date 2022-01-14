@@ -2,35 +2,83 @@
 
 1101 演算法概論 吳育松
 
-HW1 Sort (Text Input)
+## HW1 Sort (Text Input)
 
-The Hint of faster way: counting sort, string processing.
+My way which let it be optimization: 
 
-Final Rank: 3rd.
+1. counting sort.
+2. string processing.
 
-Final Grade: 92.
+**Final Rank: 3rd.**
 
+## HW2 Sparse Matrix
 
-HW2 Sparse Matrix
+My way which let it be optimization: 
 
-The Hint of faster way: less range for mult ,string processing.
+1. less range for mult.
+2. string processing.
 
-Final Rank: 3rd.
+**Final Rank: 3rd.**
 
-Final Grade: 96.
+## HW3 N queens problem
 
-HW3 N queens problem
+My way which let it be optimization: 
 
-The Hint of faster way: let it be n-m row and n-m column, every row and column only check 1 time in the same state (linked list).
+1. let it be n-m row and n-m column.
+2. every row and column only check 1 time in the same state (linked list).
 
-Final Rank: 3rd.
+**Final Rank: 3rd.**
 
-Final Grade: 96.
+## HW4 Increasing Pairs
 
-HW4 Increasing Pairs
+My way which let it be optimization: 
 
-The Hint of faster way: merge sort, insertion sort, do not complete the sort, use larger space to get less flt.
+1. merge sort, insertion sort.
+2. do not complete the sort.
+3. use larger space to get less flt.
 
-Final Rank: .
+**Final Rank: 2nd.**
 
-Final Grade: .
+## HW5 Simple Chain
+
+My way which let it be optimization: 
+
+1. xor linked list
+2. chainning hash
+3. record 2 possible answers
+
+**Final Rank: 2nd.**
+
+## HW6 BST
+
+My way which let it be optimization: 
+
+1. splay tree
+
+**Final Rank: 7th.**
+
+## HW7 Smart Text Input
+
+My way which let it be optimization: 
+
+1. loop by word.
+2. DP the number of character by < set >
+
+**Final Rank: 9th.**
+
+## HW8 Minimal Cover
+
+My way which let it be optimization: 
+
+1. Greedy (sort by the starting point, the largest end of eyery case)
+2. input string processing.
+
+**Final Rank: 2nd.**
+
+## HW9 Vertex Coloring
+
+My way which let it be optimization: 
+
+1. DFS
+
+**Final Rank: 5th.**
