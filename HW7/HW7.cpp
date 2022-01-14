@@ -54,7 +54,7 @@ int main(){
 						}
 					}
 					if(match){
-						if(x + k == str.size()-1){
+						if(x + k == str.size() - 1){
 							out << ans << '\n';
 							goto fin;
 						}
