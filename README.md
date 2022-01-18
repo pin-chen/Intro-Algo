@@ -1,6 +1,9 @@
-# NYCU Algoritm
+---
+tags: 演算法概論, 資工系必修
+---
+# Introduction to Algorithms
 
-1101 演算法概論 吳育松
+1101 吳育松
 
 ## HW1 Sort (Text Input)
 
