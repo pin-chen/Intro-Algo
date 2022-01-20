@@ -1,5 +1,5 @@
 ---
-tags: 演算法概論, 資工系必修
+tags: 演算法概論, 資工系必修, NCTU, NYCU
 ---
 # Introduction to Algorithms
 
